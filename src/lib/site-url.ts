@@ -1,16 +1,7 @@
-const localFallback = "http://localhost:3000";
+const publicSiteUrl = "https://zicatela.soteasmx.workers.dev";
 
 export function getSiteUrl() {
-  const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
-
-  if (!configuredUrl) {
-    if (process.env.VERCEL) {
-      throw new Error(
-        "NEXT_PUBLIC_SITE_URL debe configurarse en producción para generar canonical, sitemap y Open Graph correctamente.",
-      );
-    }
-    return localFallback;
-  }
+  const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || publicSiteUrl;
 
   let parsedUrl: URL;
   try {
@@ -19,7 +10,7 @@ export function getSiteUrl() {
     throw new Error("NEXT_PUBLIC_SITE_URL debe ser una URL absoluta válida.");
   }
 
-  if (process.env.VERCEL && parsedUrl.protocol !== "https:") {
+  if (process.env.NODE_ENV === "production" && parsedUrl.protocol !== "https:") {
     throw new Error("NEXT_PUBLIC_SITE_URL debe usar HTTPS en producción.");
   }
 

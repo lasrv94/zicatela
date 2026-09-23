@@ -39,16 +39,18 @@ Fuentes completas están enlazadas en la sección “Fuentes de la investigació
 - Motion `13.4.2`
 - Lucide React
 - Zod para validación de leads
+- `@opennextjs/cloudflare` `1.20.6` + Wrangler `4.137.0`
 - Open-Meteo para clima sin clave API
 
 ## Calidad y producción
 
 - Workflow de CI en `.github/workflows/ci.yml` con `npm ci`, lint y build en Node.js 24.
 - `npm ci` reproducible mediante `package-lock.json`.
+- Cloudflare Workers con adaptador oficial `@opennextjs/cloudflare` y Wrangler 4.
 - Cabeceras de seguridad básicas en `next.config.ts`.
 - Webhook de leads con validación Zod, límite de tamaño, rate limit básico por instancia y timeout.
 - Service worker con fallback offline limitado a navegación.
-- En Vercel, `NEXT_PUBLIC_SITE_URL` es obligatoria y debe usar HTTPS; el build falla si falta o es inválida.
+- `NEXT_PUBLIC_SITE_URL` usa por defecto `https://zicatela.soteasmx.workers.dev` y puede sobrescribirse con una URL HTTPS personalizada.
 - Open-Meteo muestra atribución visible. Su endpoint gratuito tiene condiciones de uso no comerciales: revisa o migra a un plan comercial antes de monetizar el sitio o superar el tier gratuito.
 
 ## Desarrollo local
@@ -57,7 +59,8 @@ Requiere Node.js `20.9+` (probado con Node.js 24).
 
 ```bash
 npm install
-cp .env.example .env.local
+Copy-Item .env.example .env.local
+Copy-Item .dev.vars.example .dev.vars
 npm run dev
 ```
 
@@ -69,28 +72,41 @@ Comandos disponibles:
 npm run lint
 npm run build
 npm run start
+npm run preview
+npm run deploy
+npm run cf-typegen
 ```
+
+`npm run preview` y `npm run deploy` ejecutan el adaptador OpenNext. No subas `.dev.vars`, `.open-next` ni secretos.
+
+## Configuración de Cloudflare Workers
+
+El Worker se llama `zicatela` y su URL pública es:
+
+```text
+https://zicatela.soteasmx.workers.dev
+```
+
+En Cloudflare Builds, usa:
+
+- Root directory: `/`
+- Build command: `npx opennextjs-cloudflare build`
+- Deploy command: `npx wrangler deploy`
+- Branch: `main`
+
+La configuración de runtime está en `wrangler.jsonc` y `open-next.config.ts`. El binding `IMAGES` habilita optimización de imágenes mediante Cloudflare Images; activa transformaciones en la cuenta y revisa su precios antes de producción.
 
 ## Configuración de producción
 
-1. Define `NEXT_PUBLIC_SITE_URL` con el dominio final HTTPS.
+1. Define `NEXT_PUBLIC_SITE_URL=https://zicatela.soteasmx.workers.dev` o un dominio HTTPS personalizado.
 2. Define `NEXT_PUBLIC_CONTACT_EMAIL` con el buzón público de privacidad.
 3. Añade `NEXT_PUBLIC_GA_MEASUREMENT_ID` sólo después de revisar el consentimiento aplicable.
-4. Define `LEADS_WEBHOOK_URL` con un endpoint HTTPS de CRM/Make/Zapier. El endpoint recibe `email`, `name`, `interest`, `source` y `receivedAt`.
-5. Define `NEXT_PUBLIC_WHATSAPP_NUMBER` sólo si quieres habilitar el botón de compartir por WhatsApp, con prefijo de país y sin `+` (por ejemplo, `521234567890`).
+4. Define `NEXT_PUBLIC_WHATSAPP_NUMBER` sólo si quieres habilitar el botón de compartir por WhatsApp, con prefijo de país y sin `+`.
+5. Configura `LEADS_WEBHOOK_URL` como secreto de Cloudflare, nunca como build variable pública. En local puedes usar `npx wrangler secret put LEADS_WEBHOOK_URL` después de autenticar Wrangler.
 6. Sustituye los enlaces de mapa/proveedores por los socios comerciales definitivos antes de publicar.
 7. Revisa el aviso de privacidad con asesoría legal para la jurisdicción y el proveedor de captación elegido.
 
 El formulario de leads es deliberadamente transparente: si el webhook no está configurado devuelve `503` y la interfaz informa que no pudo registrar el correo, en lugar de fingir que guardó datos.
-
-## Despliegue
-
-El proyecto se puede desplegar en Vercel sin cambios adicionales. En Vercel:
-
-- Importa el repositorio.
-- Añade las variables de entorno de `.env.example`.
-- Deja que Vercel detecte el build de Next.js; no configures `npm run start` como comando de producción en Vercel.
-- GitHub Pages no es compatible tal cual porque el sitio usa rutas dinámicas y `POST /api/leads`; usa Vercel u otro runtime Node.
 
 ## Licencia y créditos
 

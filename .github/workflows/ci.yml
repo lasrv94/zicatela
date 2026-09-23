@@ -35,5 +35,11 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Production build
+      - name: Next.js production build
         run: npm run build
+
+      - name: OpenNext Cloudflare build
+        run: npx opennextjs-cloudflare build
+
+      - name: Validate Workers bundle
+        run: npx wrangler deploy --dry-run
