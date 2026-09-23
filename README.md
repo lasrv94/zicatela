@@ -95,3 +95,5 @@ El proyecto se puede desplegar en Vercel sin cambios adicionales. En Vercel:
 ## Licencia y créditos
 
 El código de la aplicación se publica bajo la licencia [MIT](LICENSE). Las fotografías conservan sus licencias originales y **no** quedan cubiertas por la licencia del código. La atribución completa está en [`public/images/IMAGE_CREDITS.md`](public/images/IMAGE_CREDITS.md) y se muestra resumida en el footer. Mantén esos créditos si reutilizas o redistribuyes las imágenes.
+
+Para reportar una vulnerabilidad, sigue [`SECURITY.md`](SECURITY.md) y utiliza el canal privado de GitHub.
