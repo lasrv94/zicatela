@@ -1,0 +1,149 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-ink: #082b2a;
+  --color-foam: #f5f1e7;
+  --color-sand: #e6dcc8;
+  --color-coral: #ff6b4a;
+  --color-lime: #d9ed67;
+  --font-sans: var(--font-manrope);
+  --font-display: var(--font-fraunces);
+}
+
+:root {
+  color-scheme: light;
+  --ink: #082b2a;
+  --foam: #f5f1e7;
+  --coral: #ff6b4a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--foam);
+}
+
+body {
+  overflow-x: hidden;
+  background: var(--foam);
+  color: var(--ink);
+  font-family: var(--font-manrope), Arial, sans-serif;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--coral);
+  color: var(--ink);
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+summary:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--coral);
+  outline-offset: 4px;
+}
+
+.font-display {
+  font-variation-settings: "SOFT" 0, "WONK" 0;
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: color-mix(in srgb, var(--ink) 54%, transparent);
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 0.17em;
+  line-height: 1.1;
+  text-transform: uppercase;
+}
+
+.eyebrow::before {
+  display: block;
+  width: 1.8rem;
+  height: 1px;
+  background: var(--coral);
+  content: "";
+}
+
+.hero-grain {
+  background-image:
+    radial-gradient(circle at 18% 28%, rgba(255, 255, 255, 0.14) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 75% 62%, rgba(255, 255, 255, 0.1) 0 1px, transparent 1.5px);
+  background-size: 17px 17px, 23px 23px;
+  mix-blend-mode: soft-light;
+}
+
+.intro-orbit {
+  animation: orbit 18s linear infinite;
+}
+
+@keyframes orbit {
+  from {
+    transform: rotate(0deg) translateY(0);
+  }
+  to {
+    transform: rotate(360deg) translateY(0);
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    transform: translate3d(0, -10px, 0);
+  }
+}
+
+.animate-drift {
+  animation: drift 6s ease-in-out infinite;
+}
+
+summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+summary::-webkit-details-marker {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  body {
+    background: white;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  #planificador {
+    break-before: page;
+  }
+}
