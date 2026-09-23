@@ -70,7 +70,7 @@ export function SiteFooter() {
 
         <div className="mt-16 border-t border-white/10 pt-6 text-[10px] font-medium leading-relaxed text-white/35">
           <p>Marea PXM es un proyecto editorial independiente. No es un sitio oficial del Gobierno de Oaxaca. Los horarios, precios, rutas y servicios deben confirmarse con los proveedores correspondientes.</p>
-          <p className="mt-4">Fotografías: Wikimedia Commons, bajo licencias Creative Commons o dominio público. <a href="https://commons.wikimedia.org" target="_blank" rel="noreferrer" className="underline decoration-white/20 underline-offset-4 hover:text-white">Ver créditos</a></p>
+          <p className="mt-4">Fotografías: Wikimedia Commons, bajo licencias Creative Commons o dominio público. <a href="/images/IMAGE_CREDITS.md" className="underline decoration-white/20 underline-offset-4 hover:text-white">Ver créditos completos</a></p>
           <div className="mt-4 flex flex-wrap gap-x-5 gap-y-2">
             {credits.map((credit) => (
               <a key={credit.url} href={credit.url} target="_blank" rel="noreferrer" className="hover:text-white/65">{credit.label}</a>

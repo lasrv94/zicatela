@@ -41,6 +41,16 @@ Fuentes completas están enlazadas en la sección “Fuentes de la investigació
 - Zod para validación de leads
 - Open-Meteo para clima sin clave API
 
+## Calidad y producción
+
+- Workflow de CI en `.github/workflows/ci.yml` con `npm ci`, lint y build en Node.js 24.
+- `npm ci` reproducible mediante `package-lock.json`.
+- Cabeceras de seguridad básicas en `next.config.ts`.
+- Webhook de leads con validación Zod, límite de tamaño, rate limit básico por instancia y timeout.
+- Service worker con fallback offline limitado a navegación.
+- En Vercel, `NEXT_PUBLIC_SITE_URL` es obligatoria y debe usar HTTPS; el build falla si falta o es inválida.
+- Open-Meteo muestra atribución visible. Su endpoint gratuito tiene condiciones de uso no comerciales: revisa o migra a un plan comercial antes de monetizar el sitio o superar el tier gratuito.
+
 ## Desarrollo local
 
 Requiere Node.js `20.9+` (probado con Node.js 24).
@@ -63,12 +73,13 @@ npm run start
 
 ## Configuración de producción
 
-1. Define `NEXT_PUBLIC_SITE_URL` con el dominio final.
-2. Añade `NEXT_PUBLIC_GA_MEASUREMENT_ID` si vas a medir tráfico.
-3. Define `LEADS_WEBHOOK_URL` con un endpoint HTTPS de CRM/Make/Zapier. El endpoint recibe `email`, `name`, `interest`, `source` y `receivedAt`.
-4. Define `NEXT_PUBLIC_WHATSAPP_NUMBER` sólo si quieres habilitar el botón de compartir por WhatsApp, con prefijo de país y sin `+` (por ejemplo, `521234567890`).
-5. Sustituye los enlaces de mapa/proveedores por los socios comerciales definitivos antes de publicar.
-6. Revisa el aviso de privacidad con asesoría legal para la jurisdicción y el proveedor de captación elegido.
+1. Define `NEXT_PUBLIC_SITE_URL` con el dominio final HTTPS.
+2. Define `NEXT_PUBLIC_CONTACT_EMAIL` con el buzón público de privacidad.
+3. Añade `NEXT_PUBLIC_GA_MEASUREMENT_ID` sólo después de revisar el consentimiento aplicable.
+4. Define `LEADS_WEBHOOK_URL` con un endpoint HTTPS de CRM/Make/Zapier. El endpoint recibe `email`, `name`, `interest`, `source` y `receivedAt`.
+5. Define `NEXT_PUBLIC_WHATSAPP_NUMBER` sólo si quieres habilitar el botón de compartir por WhatsApp, con prefijo de país y sin `+` (por ejemplo, `521234567890`).
+6. Sustituye los enlaces de mapa/proveedores por los socios comerciales definitivos antes de publicar.
+7. Revisa el aviso de privacidad con asesoría legal para la jurisdicción y el proveedor de captación elegido.
 
 El formulario de leads es deliberadamente transparente: si el webhook no está configurado devuelve `503` y la interfaz informa que no pudo registrar el correo, en lugar de fingir que guardó datos.
 
@@ -78,18 +89,9 @@ El proyecto se puede desplegar en Vercel sin cambios adicionales. En Vercel:
 
 - Importa el repositorio.
 - Añade las variables de entorno de `.env.example`.
-- Usa `npm run build` como Build Command y `npm run start` como Start Command, o deja que Vercel detecte Next.js.
+- Deja que Vercel detecte el build de Next.js; no configures `npm run start` como comando de producción en Vercel.
+- GitHub Pages no es compatible tal cual porque el sitio usa rutas dinámicas y `POST /api/leads`; usa Vercel u otro runtime Node.
 
-## Créditos de imagen
+## Licencia y créditos
 
-Las fotografías están en `public/images` y provienen de Wikimedia Commons:
-
-- Daniel Sebastián Hernández Lozano — `CC BY-SA 4.0`
-- Adam Jones — `CC BY-SA 2.0`
-- Lunita28mx — `CC BY 4.0`
-- Nimodo — dominio público
-- Gzzz — `CC BY-SA 4.0`
-- Miguel angel jose diaz — `CC BY-SA 4.0`
-- Sasha India — `CC BY-SA 2.0`
-
-Los enlaces completos están en `src/components/site-footer.tsx`. Mantén los créditos si reutilizas o redistribuyes las imágenes.
+El código de la aplicación se publica bajo la licencia [MIT](LICENSE). Las fotografías conservan sus licencias originales y **no** quedan cubiertas por la licencia del código. La atribución completa está en [`public/images/IMAGE_CREDITS.md`](public/images/IMAGE_CREDITS.md) y se muestra resumida en el footer. Mantén esos créditos si reutilizas o redistribuyes las imágenes.

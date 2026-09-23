@@ -62,6 +62,19 @@ function formatDay(date: string) {
     .replace(".", "");
 }
 
+function WeatherAttribution() {
+  return (
+    <a
+      href="https://open-meteo.com/"
+      target="_blank"
+      rel="noreferrer"
+      className="text-[9px] font-semibold text-white/55 underline decoration-white/25 underline-offset-4 transition-colors hover:text-coral"
+    >
+      Datos del clima por Open-Meteo.com
+    </a>
+  );
+}
+
 export function LiveWeather() {
   const [state, setState] = useState<WeatherState>({
     status: "loading",
@@ -92,24 +105,30 @@ export function LiveWeather() {
 
   if (state.status === "loading") {
     return (
-      <div className="flex min-w-[220px] animate-pulse items-center gap-3 rounded-full border border-white/20 bg-black/15 px-4 py-3 backdrop-blur-md">
-        <div className="h-6 w-6 rounded-full bg-white/20" />
-        <div className="space-y-1.5">
-          <div className="h-2.5 w-24 rounded-full bg-white/20" />
-          <div className="h-2 w-16 rounded-full bg-white/10" />
+      <div className="flex flex-col items-end gap-2">
+        <div className="flex min-w-[220px] animate-pulse items-center gap-3 rounded-full border border-white/20 bg-black/15 px-4 py-3 backdrop-blur-md">
+          <div className="h-6 w-6 rounded-full bg-white/20" />
+          <div className="space-y-1.5">
+            <div className="h-2.5 w-24 rounded-full bg-white/20" />
+            <div className="h-2 w-16 rounded-full bg-white/10" />
+          </div>
         </div>
+        <WeatherAttribution />
       </div>
     );
   }
 
   if (state.status === "error" || !state.data) {
     return (
-      <div className="flex min-w-[220px] items-center gap-3 rounded-full border border-white/20 bg-black/15 px-4 py-3 backdrop-blur-md">
-        <MapPin className="h-5 w-5 text-coral" />
-        <div>
-          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/60">Puerto Escondido</p>
-          <p className="mt-0.5 text-sm font-semibold">Clima no disponible</p>
+      <div className="flex flex-col items-end gap-2">
+        <div className="flex min-w-[220px] items-center gap-3 rounded-full border border-white/20 bg-black/15 px-4 py-3 backdrop-blur-md">
+          <MapPin className="h-5 w-5 text-coral" />
+          <div>
+            <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/60">Puerto Escondido</p>
+            <p className="mt-0.5 text-sm font-semibold">Clima no disponible</p>
+          </div>
         </div>
+        <WeatherAttribution />
       </div>
     );
   }
@@ -118,12 +137,13 @@ export function LiveWeather() {
   const WeatherIcon = condition.icon;
 
   return (
-    <div
-      className="min-w-[236px] rounded-full border border-white/20 bg-black/15 p-1.5 pr-4 backdrop-blur-md"
-      aria-live="polite"
-      title={`${condition.label}. Sensación ${Math.round(state.data.current.feelsLike)} °C. Datos: Open-Meteo.`}
-    >
-      <div className="flex items-center gap-3">
+    <div className="flex flex-col items-end gap-2">
+      <div
+        className="min-w-[236px] rounded-full border border-white/20 bg-black/15 p-1.5 pr-4 backdrop-blur-md"
+        aria-live="polite"
+        title={`${condition.label}. Sensación ${Math.round(state.data.current.feelsLike)} °C. Datos: Open-Meteo.`}
+      >
+        <div className="flex items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-foam/95 text-coral">
           <WeatherIcon className="h-5 w-5" strokeWidth={1.8} />
         </div>
@@ -148,6 +168,8 @@ export function LiveWeather() {
           })}
         </div>
       </div>
+      </div>
+      <WeatherAttribution />
     </div>
   );
 }

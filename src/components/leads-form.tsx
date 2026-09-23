@@ -86,7 +86,7 @@ export function LeadsForm() {
                 <input id="lead-company" name="company" tabIndex={-1} autoComplete="off" />
               </div>
               <div className="flex flex-col items-start gap-4 pt-2 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
-                <p className="max-w-xs text-[10px] font-medium leading-relaxed text-ink/42">Al enviar aceptas recibirte información de Marea PXM. Puedes darte de baja cuando quieras.</p>
+                <p className="max-w-xs text-[10px] font-medium leading-relaxed text-ink/42">Al enviar aceptas recibir información de Marea PXM. La baja se gestiona según el proveedor que configure el propietario del sitio.</p>
                 <button type="submit" disabled={state === "loading"} className="inline-flex items-center gap-2 rounded-full bg-ink px-6 py-3.5 text-xs font-extrabold text-white transition-colors hover:bg-coral hover:text-ink disabled:cursor-wait disabled:opacity-60">
                   {state === "loading" ? "Enviando…" : "Guardar mi marea"}
                   <ArrowRight className="h-4 w-4" />

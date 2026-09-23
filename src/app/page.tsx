@@ -11,8 +11,9 @@ import { LeadsForm } from "@/components/leads-form";
 import { SiteFooter } from "@/components/site-footer";
 import { ServiceWorkerRegistration } from "@/components/service-worker-registration";
 import { experiences, faqs } from "@/data/site";
+import { getSiteUrl } from "@/lib/site-url";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+const siteUrl = getSiteUrl();
 
 const structuredData = {
   "@context": "https://schema.org",
